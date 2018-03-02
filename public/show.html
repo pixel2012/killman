@@ -1,0 +1,27 @@
+<div data-page="show" class="page no-navbar" id="show">
+    <div class="page-content black">
+        <div class="enter">
+            <div class="content-block">
+                <div class="identity-title">您的身份是</div>
+                <div class="state" v-if="state">已加入:{{state.join}}人（共:{{state.total}}人）</div>
+                <div class="identity-board">
+                    <span v-bind:class="{'white':!flag}" v-if="identity">{{identity}}</span>
+                </div>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-100">
+                        <div class="button button-big color-white" @click="toggle">
+                            <div v-if="flag">隐藏身份</div>
+                            <div v-else>显示身份</div>
+                        </div>
+                        <br>
+                        <div class="button button-big" :class="{'color-white':detail,'color-gray':!detail}">
+                            <div @click="lookDetail">查看所有人的身份</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

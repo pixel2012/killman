@@ -1,0 +1,18 @@
+<div class="popup popup-detail">
+    <div class="content-block">
+        <div class="popup-caption">本轮游戏身份名单</div>
+        {{#each detail}}
+        <dl>
+            <dt class="popup-title">{{convertIdentity @key}}</dt>
+            <dd class="row no-gutter popup-content">
+                {{#each this.detail}}
+                <span class="col-20 {{#if this.live}}active{{/if}}">{{this.name}}</span>
+                {{/each}}
+            </dd>
+        </dl>
+        {{/each}}
+        <p>
+            <a href="#" class="button button-big color-black close-popup">关闭页面</a>
+        </p>
+    </div>
+</div>

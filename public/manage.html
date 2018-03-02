@@ -1,0 +1,159 @@
+<div data-page="manage" class="page no-navbar" id="manage">
+    <div class="page-content black">
+        <div class="my-content">
+            <div class="manage-title">
+                <div class="row" style="align-items:center;">
+                    <div class="col-70">
+                        <div class="manage-title-bold">管理界面-[{{gameState}}]</div>
+                        <div class="manage-title-normal">概况:
+                            总人数:{{comState.total}};加入:{{comState.join}};活:{{comState.live}};死:{{comState.die}}
+                        </div>
+                    </div>
+                    <div class="col-30">
+                        <span class="button button-fill color-red" @click="gameOver">游戏结束</span></div>
+                </div>
+            </div>
+            <div class="manage-body">
+                <div class="row">
+                    <div class="col-20">
+                        <div class="manage-name">杀手</div>
+                        <div class="manage-content">
+                            总:{{comState.killer.total}}<br>活:{{comState.killer.live}}<br>死:{{comState.killer.die}}
+                        </div>
+                    </div>
+                    <div class="col-20">
+                        <div class="manage-name">警察</div>
+                        <div class="manage-content">
+                            总:{{comState.police.total}}<br>活:{{comState.police.live}}<br>死:{{comState.police.die}}
+                        </div>
+                    </div>
+                    <div class="col-20">
+                        <div class="manage-name">密警</div>
+                        <div class="manage-content">
+                            总:{{comState.secretPolice.total}}<br>活:{{comState.secretPolice.live}}<br>死:{{comState.secretPolice.die}}
+                        </div>
+                    </div>
+                    <div class="col-20">
+                        <div class="manage-name">医生</div>
+                        <div class="manage-content">
+                            总:{{comState.doctor.total}}<br>活:{{comState.doctor.live}}<br>死:{{comState.doctor.die}}
+                        </div>
+                    </div>
+                    <div class="col-20">
+                        <div class="manage-name">平民</div>
+                        <div class="manage-content">
+                            总:{{comState.civilian.total}}<br>活:{{comState.civilian.live}}<br>死:{{comState.civilian.die}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-block">
+            <div class="buttons-row">
+                <a href="#tab1" class="tab-link color-gray active button">杀手</a>
+                <a href="#tab2" class="tab-link color-gray button">警察</a>
+                <a href="#tab3" class="tab-link color-gray button">密警</a>
+                <a href="#tab4" class="tab-link color-gray button">医生</a>
+                <a href="#tab5" class="tab-link color-gray button">平民</a>
+            </div>
+        </div>
+        <div class="tabs" v-if="currentState">
+            <div id="tab1" class="tab active">
+                <div class="wrap">
+                    <div>
+                        <template v-for="item in currentState.progress.killer.detail">
+                            <div class="flex" v-bind:class="{'die':!item.live}">
+                                <div class="flex-name">{{item.name}}</div>
+                                <div class="flex-delete">
+                                    <span class="button button-fill color-gray" v-if="isRevive && !item.live"
+                                          @click="revive(item)">复活</span>
+                                    <span class="button button-fill color-green" v-if="item.live"
+                                          @click="kill(item)">杀之</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab 2 -->
+            <div id="tab2" class="tab">
+                <div class="wrap">
+                    <div>
+                        <template v-for="item in currentState.progress.police.detail">
+                            <div class="flex" v-bind:class="{'die':!item.live}">
+                                <div class="flex-name">{{item.name}}</div>
+                                <div class="flex-delete">
+                                    <span class="button button-fill color-gray" v-if="isRevive && !item.live"
+                                          @click="revive(item)">复活</span>
+                                    <span class="button button-fill color-green" v-if="item.live"
+                                          @click="kill(item)">杀之</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab 3 -->
+            <div id="tab3" class="tab">
+                <div class="wrap">
+                    <div>
+                        <template v-for="item in currentState.progress.secretPolice.detail">
+                            <div class="flex" v-bind:class="{'die':!item.live}">
+                                <div class="flex-name">{{item.name}}
+                                    <span class="heart-wrap" v-if="item.power" @click="minusPower(item)">
+                                        <div class="heart-shape" v-for="n in item.power"></div>
+                                    </span>
+                                </div>
+                                <div class="flex-delete">
+                                    <span class="button button-fill color-gray" v-if="isRevive && !item.live"
+                                          @click="revive(item)">复活</span>
+                                    <span class="button button-fill color-green" v-if="item.live"
+                                          @click="kill(item)">杀之</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab 4 -->
+            <div id="tab4" class="tab">
+                <div class="wrap">
+                    <div>
+                        <template v-for="item in currentState.progress.doctor.detail">
+                            <div class="flex" v-bind:class="{'die':!item.live}">
+                                <div class="flex-name">{{item.name}}
+                                    <span class="heart-wrap" v-if="item.power" @click="minusPower(item)">
+                                        <div class="heart-shape" v-for="n in item.power"></div>
+                                    </span>
+                                </div>
+                                <div class="flex-delete">
+                                    <span class="button button-fill" v-if="item.live"
+                                          v-bind:class="{'color-green':item.live,'color-gray':!item.live}"
+                                          @click="kill(item)">杀之</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab 5 -->
+            <div id="tab5" class="tab">
+                <div class="wrap">
+                    <div>
+                        <template v-for="item in currentState.progress.civilian.detail">
+                            <div class="flex" v-bind:class="{'die':!item.live}">
+                                <div class="flex-name">{{item.name}}</div>
+                                <div class="flex-delete">
+                                    <span class="button button-fill color-gray" v-if="isRevive && !item.live"
+                                          @click="revive(item)">复活</span>
+                                    <span class="button button-fill color-green" v-if="item.live"
+                                          @click="kill(item)">杀之</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
